@@ -1,6 +1,6 @@
 <?php
 
-error_reporting(1);
+error_reporting();
 session_start();
 
 include "koneksi.php";
