@@ -31,7 +31,7 @@ include "../koneksi.php";
 
 $nip = $_GET['id_jabatan'];
 $sqledit = "select * from tbl_jabatan where id_jabatan = '$nip'";
-$hasil = mysqli_query($sqledit);
+$hasil = $mysqli->query($sqledit);
 
 if (!$hasil)
 	die ("Gagal query untuk edit data karena..".mysqli_error());
@@ -46,19 +46,14 @@ if (!$hasil)
                 
     <?php
 
-	    function db(){ 
-	    $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
-	    mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
-	    return $conn;  
-	    }
                 function update(){
                         
-                        $conn = db();
+                        global $mysqli;
                         $a	= $_POST['id_jabatan'];
                         $b	= $_POST['nama_jabatan'];
   
                         $sql=" update tbl_jabatan set nama_jabatan ='$b' where id_jabatan='$a' ";             
-                        $hasil=mysqli_query($sql);
+                        $hasil=$mysqli->query($sql);
                         if(!$hasil)
 			      die("Gagal Simpan Hasil Edit Jabatan Karena :".mysqli_error());
                         
@@ -66,18 +61,15 @@ if (!$hasil)
 	       }
     ?>
 		<form action="<?php if (isset($_REQUEST['update'])) {update();} ?>" method="post" onsubmit="return update()">
-<?
-echo "			<table border=1>
+<table border=1>
 				<tr>
 				<!-- use readonly for input value to save editing, it doesn't work with disabled -->
-					<td>ID Jabatan</td><td><input class='reqname' type='text' size=20 name='id_jabatan' value='$nip' readonly></td>
+					<td>ID Jabatan</td><td><input class='reqname' type='text' size=20 name='id_jabatan' value='<?php echo $nip; ?>' readonly></td>
 				</tr>
 				<tr>
-					<td>Nama Jabatan</td><td><input class='reqname' type='text' size=35 name='nama_jabatan' value='$nama_pns' ></td>
+					<td>Nama Jabatan</td><td><input class='reqname' type='text' size=35 name='nama_jabatan' value='<?php echo $nama_pns; ?>' ></td>
 				</tr>
 				
-    ";    
-?>
 				<tr>
 				<td align="right" colspan=2>
 				 <input action="action" type="button" value="Kembali" onclick="history.go(-1);" />

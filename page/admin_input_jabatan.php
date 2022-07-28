@@ -101,22 +101,15 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     <table border="1" >
     
 <?php
-        function db(){ //handles database connection
 
-        //connect to the database server or die and spit out connection error
-        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
-        //select database table or die and spit out database selection error
-        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
-          return $conn;  
-        }
         function simpan(){
            // include "../koneksi.php";
-	    $conn = db();					
+            global $mysqli;
             $a		    = $_POST['nama_jabatan'];
 
 	    
             $sql="insert into tbl_jabatan (nama_jabatan) values ('$a')";
-            $hasil=mysqli_query($sql);
+            $hasil=$mysqli->query($sql);
             if(!$hasil){
             die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 	    }else {
@@ -145,10 +138,10 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 <?php
 	include "../koneksi.php";
         //$nip = $_GET['username'];
-	$hasil = mysqli_query("SELECT * FROM tbl_jabatan");
+	$hasil = $mysqli->query("SELECT * FROM tbl_jabatan");
 
 	if (!$hasil)
-		die("Gagal Query data karena : ".mysqli_error());
+		die("Gagal Query data karena : ". $mysqli->error);
 
         /*if ($row = mysqli_fetch_array($hasil)){
 	echo "Nama : ".$row['penilai']."<br>";
