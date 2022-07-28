@@ -6,6 +6,6 @@
 	
 	$mysqli = new mysqli($host, $user, $pass, $dbname);
 	
-	if($mysql->connect_errno) {
+	if($mysqli->connect_errno) {
 		die('Koneksi gagal karena ' . $mysqli->connect_error);
 	}
