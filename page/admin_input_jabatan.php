@@ -104,9 +104,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         function db(){ //handles database connection
 
         //connect to the database server or die and spit out connection error
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
         //select database table or die and spit out database selection error
-        mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
           return $conn;  
         }
         function simpan(){
@@ -116,9 +116,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 
 	    
             $sql="insert into tbl_jabatan (nama_jabatan) values ('$a')";
-            $hasil=mysql_query($sql);
+            $hasil=mysqli_query($sql);
             if(!$hasil){
-            die("Gagal Simpan Data Pegawai karena :".mysql_error());
+            die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 	    }else {
             header('Location: admin_input_jabatan.php');
 	    exit;}
@@ -145,12 +145,12 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 <?php
 	include "../koneksi.php";
         //$nip = $_GET['username'];
-	$hasil = mysql_query("SELECT * FROM tbl_jabatan");
+	$hasil = mysqli_query("SELECT * FROM tbl_jabatan");
 
 	if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
-        /*if ($row = mysql_fetch_array($hasil)){
+        /*if ($row = mysqli_fetch_array($hasil)){
 	echo "Nama : ".$row['penilai']."<br>";
 	echo "Dinilai : ".$row['dinilai']."<br>";
 	
@@ -164,7 +164,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     <th>ACTION</th>
   </tr>";
 
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -175,7 +175,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	        //echo "<td> <a class='del' href=form_admin.php?mode=delete&nip=$row[nip]>Hapus</a></td> ";
 		echo "</tr>";
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
     <input type="submit" name="print" value="Print" onclick="printDiv()"/>

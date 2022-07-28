@@ -32,12 +32,12 @@ include "../koneksi.php";
 $nip = $_GET['dinilai'];
 $year = $_GET['tahun_pkp'];
 $sqledit = "select * from tbl_pkp where dinilai = '$nip' AND tahun_pkp='$year'";
-$hasil = mysql_query($sqledit);
+$hasil = mysqli_query($sqledit);
 
 if (!$hasil)
-	die ("Gagal query untuk edit data karena..".mysql_error());
+	die ("Gagal query untuk edit data karena..".mysqli_error());
 	
-	$data = mysql_fetch_array($hasil);
+	$data = mysqli_fetch_array($hasil);
 	$tahun_pkp		=$data['tahun_pkp'];
         $penilai		=$data['penilai'];
 	$dinilai		=$data['dinilai'];
@@ -64,8 +64,8 @@ if (!$hasil)
     <?php
 
 	    function db(){ 
-	    $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
-	    mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+	    $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
+	    mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
 	    return $conn;  
 	    }
                 function update(){
@@ -111,9 +111,9 @@ if (!$hasil)
 				     tgl_penilaian_pkp     	='$q'
 			      where dinilai='$c' AND tahun_pkp='$a'  ";
 			      
-                        $hasil=mysql_query($sql);
+                        $hasil=mysqli_query($sql);
                         if(!$hasil)
-			      die("Gagal Simpan Hasil Edit PKP Karena :".mysql_error());
+			      die("Gagal Simpan Hasil Edit PKP Karena :".mysqli_error());
                         
 			header('Location: penilai_input_pkp.php?nip='.$_GET['dinilai']);exit;
 	       }

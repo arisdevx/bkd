@@ -29,12 +29,12 @@ include "../koneksi.php";
 
 $nip = $_GET['nip'];
 $sqledit = "select * from tbl_pns where nip = '$nip'";
-$hasil = mysql_query($sqledit);
+$hasil = mysqli_query($sqledit);
 
 if (!$hasil)
-	die ("Gagal query untuk edit data karena..".mysql_error());
+	die ("Gagal query untuk edit data karena..".mysqli_error());
 	
-	$data = mysql_fetch_array($hasil);
+	$data = mysqli_fetch_array($hasil);
 	
 	$nip=$data['nip'];
         $nama_pns=$data['nama_pns'];
@@ -53,8 +53,8 @@ if (!$hasil)
                 
     <?php
 	    function db(){ 
-	    $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
-	    mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+	    $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
+	    mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
 	    return $conn;  
 	    }
                 function update(){
@@ -77,9 +77,9 @@ if (!$hasil)
                                                         level	='$h',
 							pwd = md5(md5('$h'))
                                     where nip='$a' ";             
-                        $hasil=mysql_query($sql);
+                        $hasil=mysqli_query($sql);
                         if(!$hasil)
-                        die("Gagal Simpan Hasil Edit Pegawai Karena :".mysql_error());
+                        die("Gagal Simpan Hasil Edit Pegawai Karena :".mysqli_error());
 			
                         header('Location: admin_input_pegawai.php');exit;
 	       }

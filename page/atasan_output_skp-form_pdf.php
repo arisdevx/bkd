@@ -11,33 +11,33 @@ include ('../nigol.php');
 	$year 	= $_GET['tahun_skp'];
 	$nip 	= $_GET['dinilai'];
 	$penilai = $_GET['penilai'];
-		$get_penilai  = mysql_query("select * from tbl_pns where nip='$penilai'");	
-		if($row_get_penilai = mysql_fetch_array($get_penilai))
+		$get_penilai  = mysqli_query("select * from tbl_pns where nip='$penilai'");	
+		if($row_get_penilai = mysqli_fetch_array($get_penilai))
 		$html .="<div style='float: left; alignment-adjust: middle; width: 28%; margin-bottom: 0pt;'>";
 		$html .="	<b>I. PEJABAT PENILAI</b> <br>
 				1. Nama		 : $row_get_penilai[nama_pns]<br>
 				2. NIP     	 : $penilai<br>";
-		$get_golrujab = mysql_query("select * from tbl_jabatan, tbl_pangkat_golru
+		$get_golrujab = mysqli_query("select * from tbl_jabatan, tbl_pangkat_golru
 						where tbl_jabatan.id_jabatan=$row_get_penilai[id_jabatan]
 						AND tbl_pangkat_golru.id_palru=$row_get_penilai[id_palru]");
-		if($row_get_golrujab = mysql_fetch_array($get_golrujab))
+		if($row_get_golrujab = mysqli_fetch_array($get_golrujab))
 		$html .="	3. Pangkat/golru : $row_get_golrujab[nama_palru]<br>
 				4. Jabatan	 : $row_get_golrujab[nama_jabatan]<br>";
 		$html .="		</div>";
 	//===============
 	
-        /*$hasil2  = mysql_query("select * from tbl_form_skp where penilai='$penilai'");
+        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai='$penilai'");
 	if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
-	if($row = mysql_fetch_array($hasil2))*/
-	    $hasil  = mysql_query("select * from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."' ORDER BY tahun_skp");	
+		die("Gagal Query data karena : ".mysqli_error());
+	if($row = mysqli_fetch_array($hasil2))*/
+	    $hasil  = mysqli_query("select * from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."' ORDER BY tahun_skp");	
 	
-	$ambil = mysql_query("select * from tbl_pns where nip='".$nip."'");
+	$ambil = mysqli_query("select * from tbl_pns where nip='".$nip."'");
 	
 	
-	    if ($buaris = mysql_fetch_array($ambil))
-		$ambil2 = mysql_query("select * from tbl_pangkat_golru where id_palru='".$buaris['id_palru']."'");
-		$ambil3 = mysql_query("select * from tbl_jabatan where id_jabatan='".$buaris['id_jabatan']."'");
+	    if ($buaris = mysqli_fetch_array($ambil))
+		$ambil2 = mysqli_query("select * from tbl_pangkat_golru where id_palru='".$buaris['id_palru']."'");
+		$ambil3 = mysqli_query("select * from tbl_jabatan where id_jabatan='".$buaris['id_jabatan']."'");
 		echo "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b><br><br>";
 	//======RIGHT=====
 			
@@ -45,9 +45,9 @@ include ('../nigol.php');
 				<b>II. PEGAWAI NEGERI SIPIL YANG DINILAI</b> <br>
 				1. Nama		 : $buaris[nama_pns]<br>
 				2. NIP     	 : $nip<br>";
-	    if ($buarisz = mysql_fetch_array($ambil2))
+	    if ($buarisz = mysqli_fetch_array($ambil2))
 		$html .="	3. Pangkat/golru : $buarisz[nama_palru]<br>";
-	    if ($buariszs = mysql_fetch_array($ambil3))
+	    if ($buariszs = mysqli_fetch_array($ambil3))
 		$html .="	4. Jabatan	 : $buariszs[nama_jabatan]<br>
 				</div>";
 	//===============
@@ -70,7 +70,7 @@ include ('../nigol.php');
     <th>Biaya</th>
    </tr>";
    
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		$html .= "<tr>";
@@ -87,7 +87,7 @@ include ('../nigol.php');
 	 $nip = $_GET['dinilai'];
 
 	      
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	$html .= "</table>";
 	$html .="<br><br><br><br>";
 	

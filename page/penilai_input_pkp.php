@@ -98,13 +98,13 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         Nama    : <?php echo $_SESSION['name']; ?><br/>
 	<?php
 	  include "koneksi.php";
-	  //$hasil  = mysql_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
-	  $hasil  = mysql_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+	  //$hasil  = mysqli_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
+	  $hasil  = mysqli_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 		
-	  if($row = mysql_fetch_array($hasil)){
+	  if($row = mysqli_fetch_array($hasil)){
 	    echo "Jabatan : ".$row['nama_jabatan'];
 	    echo "<br>";
 	    echo "Pangkat, golru : ".$row['nama_palru'];
@@ -112,10 +112,10 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    //echo "Kode Atasan : ".$row['kode2'];
 	    
 	  }
-	  $hasil_lagi  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	  $hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='".$row['kode2']."' AND a.level='atasan' ORDER BY a.level");
-	  if($rowz = mysql_fetch_array($hasil_lagi)){
+	  if($rowz = mysqli_fetch_array($hasil_lagi)){
 	    echo "<b>Atasan Penilai :</b><br>";
 	    echo "NIP : ".$rowz['nip'];
 	    echo "<br>";
@@ -141,9 +141,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         function db(){ //handles database connection
 
         //connect to the database server or die and spit out connection error
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
         //select database table or die and spit out database selection error
-        mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
           return $conn;  
         }
         function simpan(){
@@ -173,10 +173,10 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    
 	    
             $sql="insert into tbl_pkp values ('$a','$b','$c','$d','$e','$f','$g','$h','$i','$j','$jumlah','$rata','$nilai','$n','$o','$p','$q')";
-            $hasil=mysql_query($sql);
+            $hasil=mysqli_query($sql);
 	    
             if(!$hasil){
-            die("Gagal Simpan Data PKP karena :".mysql_error());
+            die("Gagal Simpan Data PKP karena :".mysqli_error());
 	    }
 	       else {
 	       header('Location: penilai_input_pkp.php?nip='.$_GET['nip']);  
@@ -189,10 +189,10 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     if($_GET['mode'] == 'delete') {
        if($_GET['tahun_pkp'] && $_GET['dinilai']) {
           $query = "DELETE FROM tbl_pkp
-		     WHERE tahun_pkp=" . mysql_real_escape_string($_GET['tahun_pkp']) . " AND
-			   dinilai='" . mysql_real_escape_string($_GET['dinilai']) . "'
+		     WHERE tahun_pkp=" . mysqli_real_escape_string($_GET['tahun_pkp']) . " AND
+			   dinilai='" . mysqli_real_escape_string($_GET['dinilai']) . "'
 		     ";
-          mysql_query($query);
+          mysqli_query($query);
        }
     }
 	if($query)
@@ -257,19 +257,19 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 <?php
 	include "../koneksi.php";
         $nip = $_GET['nip'];
-        /*$hasil2  = mysql_query("select * from tbl_pkp where penilai=".$_SESSION['userid']."");
+        /*$hasil2  = mysqli_query("select * from tbl_pkp where penilai=".$_SESSION['userid']."");
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 	
-	if($row = mysql_fetch_array($hasil2))*/
-	    $hasil  = mysql_query("select * from tbl_pkp where dinilai='".$nip."' ORDER BY tahun_pkp");	
+	if($row = mysqli_fetch_array($hasil2))*/
+	    $hasil  = mysqli_query("select * from tbl_pkp where dinilai='".$nip."' ORDER BY tahun_pkp");	
 	 if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
 	echo '<input type=button value="Refresh" onClick="window.location.reload()" /><br><br>';
 	
-	$ambil = mysql_query("select nama_pns from tbl_pns where nip='".$nip."'");
-	    if ($buaris = mysql_fetch_array($ambil))
+	$ambil = mysqli_query("select nama_pns from tbl_pns where nip='".$nip."'");
+	    if ($buaris = mysqli_fetch_array($ambil))
 	       echo "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b>";
 	
 	echo "<center><table id='rounded-corner' summary='2007 Major IT Companies Profit' border=1>
@@ -296,7 +296,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 
 
 		
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -331,7 +331,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 		echo "</tr>";
             
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
    

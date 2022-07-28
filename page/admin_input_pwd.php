@@ -69,9 +69,9 @@ Silahkan pilih tombol "Set Password" untuk mengganti Password sesuai hak akses y
 		  function db(){ //handles database connection
 	  
 		  //connect to the database server or die and spit out connection error
-		  $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+		  $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
 		  //select database table or die and spit out database selection error
-		  mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+		  mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
 		    return $conn;  
 		  }
 		  //===========================
@@ -82,9 +82,9 @@ Silahkan pilih tombol "Set Password" untuk mengganti Password sesuai hak akses y
 	  
 		      
 		      $sql="update tbl_pns set pwd=md5(md5('$a')) where level='atasan'";
-		      $hasil=mysql_query($sql);
+		      $hasil=mysqli_query($sql);
 		      if(!$hasil){
-		      die("Gagal Simpan Data Pegawai karena :".mysql_error());
+		      die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 		      }else {
 		      header('Location: admin_input_pwd.php');
 		      exit;}
@@ -97,9 +97,9 @@ Silahkan pilih tombol "Set Password" untuk mengganti Password sesuai hak akses y
 	  
 		      
 		      $sql="update tbl_pns set pwd=md5(md5('$b')) where level='penilai'";
-		      $hasil=mysql_query($sql);
+		      $hasil=mysqli_query($sql);
 		      if(!$hasil){
-		      die("Gagal Simpan Data Pegawai karena :".mysql_error());
+		      die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 		      }else {
 		      header('Location: admin_input_pwd.php');
 		      exit;}
@@ -111,9 +111,9 @@ Silahkan pilih tombol "Set Password" untuk mengganti Password sesuai hak akses y
 	  
 		      
 		      $sql="update tbl_pns set pwd=md5(md5('$c')) where level='pegawai'";
-		      $hasil=mysql_query($sql);
+		      $hasil=mysqli_query($sql);
 		      if(!$hasil){
-		      die("Gagal Simpan Data Pegawai karena :".mysql_error());
+		      die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 		      }else {
 		      header('Location: admin_input_pwd.php');
 		      exit;}

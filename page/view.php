@@ -1,14 +1,14 @@
 <?php
 	include "../koneksi.php";
         //$nip = $_GET['username'];
-	//$hasil = mysql_query("SELECT * FROM tbl_form WHERE penilai='".$nip."'");
+	//$hasil = mysqli_query("SELECT * FROM tbl_form WHERE penilai='".$nip."'");
 	
-        //$hasil  = mysql_query("SELECT * FROM tbl_form WHERE penilai=1057;");
-	$hasil  = mysql_query("select * from tbl_pns where pwd=md5('aldy')");
+        //$hasil  = mysqli_query("SELECT * FROM tbl_form WHERE penilai=1057;");
+	$hasil  = mysqli_query("select * from tbl_pns where pwd=md5('aldy')");
 	if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
-        /*if ($row = mysql_fetch_array($hasil)){
+        /*if ($row = mysqli_fetch_array($hasil)){
 	echo "Nama : ".$row['penilai']."<br>";
 	echo "Dinilai : ".$row['dinilai']."<br>";
 	
@@ -29,9 +29,9 @@
   </tr>";
 
 
-        //while(mysql_fetch_assoc($hasil))
-	//while(mysql_num_rows($hasil)==$hitung)
-	while($row = mysql_fetch_array($hasil))
+        //while(mysqli_fetch_assoc($hasil))
+	//while(mysqli_num_rows($hasil)==$hitung)
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -48,6 +48,6 @@
 		echo "</tr>";
             
 	}
-	//mysql_free_result($result);
+	//mysqli_free_result($result);
 	echo "</table>";
 ?>

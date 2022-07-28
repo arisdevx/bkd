@@ -31,12 +31,12 @@ include "../koneksi.php";
 
 $nip = $_GET['id_jabatan'];
 $sqledit = "select * from tbl_jabatan where id_jabatan = '$nip'";
-$hasil = mysql_query($sqledit);
+$hasil = mysqli_query($sqledit);
 
 if (!$hasil)
-	die ("Gagal query untuk edit data karena..".mysql_error());
+	die ("Gagal query untuk edit data karena..".mysqli_error());
 	
-	$data = mysql_fetch_array($hasil);
+	$data = mysqli_fetch_array($hasil);
 	$nip=$data['id_jabatan'];
         $nama_pns=$data['nama_jabatan'];
 	echo "<center><h1>Edit Data Jabatan</h1></center>";
@@ -47,8 +47,8 @@ if (!$hasil)
     <?php
 
 	    function db(){ 
-	    $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
-	    mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+	    $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
+	    mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
 	    return $conn;  
 	    }
                 function update(){
@@ -58,9 +58,9 @@ if (!$hasil)
                         $b	= $_POST['nama_jabatan'];
   
                         $sql=" update tbl_jabatan set nama_jabatan ='$b' where id_jabatan='$a' ";             
-                        $hasil=mysql_query($sql);
+                        $hasil=mysqli_query($sql);
                         if(!$hasil)
-			      die("Gagal Simpan Hasil Edit Jabatan Karena :".mysql_error());
+			      die("Gagal Simpan Hasil Edit Jabatan Karena :".mysqli_error());
                         
 			header('Location: admin_input_jabatan.php');exit;     
 	       }

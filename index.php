@@ -11,7 +11,7 @@ alert("NIP should be Nomor Induk Pegawai, Password stored by Administrator, Plea
 </head>
 	<?php
 
-		error_reporting(0);
+		error_reporting(1);
 			$error = $_GET['error'];
 	
 			if ($error == 1) {

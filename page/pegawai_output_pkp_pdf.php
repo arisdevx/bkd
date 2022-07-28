@@ -7,16 +7,16 @@ include ('../nigol.php');
 	$html .= '<h2 align="center">PENILAIAN PRESTASI KERJA<br>PEGAWAI NEGERI SIPIL</h2><br>';
         $nip = $_GET['dinilai'];
 	$year = $_GET['tahun_pkp'];
-        /*$hasil2  = mysql_query("select * from tbl_form_skp where penilai=".$_SESSION['userid']."");
+        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai=".$_SESSION['userid']."");
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
 		
-	if($row = mysql_fetch_array($hasil2))*/
-	    $hasil  = mysql_query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");	
+	if($row = mysqli_fetch_array($hasil2))*/
+	    $hasil  = mysqli_query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");	
 	
-	$ambil = mysql_query("select nama_pns from tbl_pns where nip='".$nip."'");
-	    if ($buaris = mysql_fetch_array($ambil))
+	$ambil = mysqli_query("select nama_pns from tbl_pns where nip='".$nip."'");
+	    if ($buaris = mysqli_fetch_array($ambil))
 		$html .= "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b><br><br>";
 		$html .="<br><br>";
 	$html .= "<center><table id='rounded-corner' summary='2007 Major IT Companies Profit' border=1>
@@ -40,7 +40,7 @@ include ('../nigol.php');
     <th>Kepemimpinan</th>
    </tr>";
 		
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
 		$html .= "<tr>";
 		$html .= "<td>" .$row['tahun_pkp']. "</td>";
@@ -69,15 +69,15 @@ include ('../nigol.php');
 		$html .= "</tr>";
 	}
 	      
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	
-	$hasil  = mysql_query("select a.kode, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+	$hasil  = mysqli_query("select a.kode, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
-	if($row = mysql_fetch_array($hasil))
-	$hasil_lagi  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	if($row = mysqli_fetch_array($hasil))
+	$hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='".$row['kode']."' AND a.level='penilai' ORDER BY a.level");
-	if($rowz = mysql_fetch_array($hasil_lagi))
+	if($rowz = mysqli_fetch_array($hasil_lagi))
 	$html .= "</table>";
 		$html .="<br><br><br><br><br><br>";
 		$html .="<b>Blora, 31 Desember</b> $year<br>";

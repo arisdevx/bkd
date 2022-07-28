@@ -1,25 +1,25 @@
 <?php
         function db(){ 
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
         
-        mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
           return $conn;  
         }
 			function hasil(){
 				$conn = db();
 					
-						$q1  = mysql_query("select sum(nilai_capaian_skp)/count(tahun_skp)*0.6 AS Nilai_SKP from tbl_form_skp where tahun_skp=".$_POST['tahun_skp']." AND dinilai='197411222008011004'");
+						$q1  = mysqli_query("select sum(nilai_capaian_skp)/count(tahun_skp)*0.6 AS Nilai_SKP from tbl_form_skp where tahun_skp=".$_POST['tahun_skp']." AND dinilai='197411222008011004'");
 						if (!$q1)
-							die("Gagal Query data karena : ".mysql_error());
+							die("Gagal Query data karena : ".mysqli_error());
 
-							if($row = mysql_fetch_array($q1))
+							if($row = mysqli_fetch_array($q1))
 							echo "Nilai SKP : ".$row['Nilai_SKP']."<br>";
 
-						$q2  = mysql_query("select nilai_pkp AS Nilai_PKP from tbl_pkp where tahun_pkp=".$_POST['tahun_skp']." AND dinilai='197411222008011004'");	
+						$q2  = mysqli_query("select nilai_pkp AS Nilai_PKP from tbl_pkp where tahun_pkp=".$_POST['tahun_skp']." AND dinilai='197411222008011004'");	
 						if (!$q2)
-							die("Gagal Query data karena : ".mysql_error());
+							die("Gagal Query data karena : ".mysqli_error());
 
-							if($rowz = mysql_fetch_array($q2))
+							if($rowz = mysqli_fetch_array($q2))
 							echo "Nilai SKP : ".$rowz['Nilai_PKP'];
 
 						$nilai_pk = $row['Nilai_SKP']+$rowz['Nilai_PKP'];

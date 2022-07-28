@@ -77,6 +77,8 @@ $(document).ready(function(){
 session_start();
 include ('../nigol.php');
 
+global $mysqli;
+
 //require_once 'config/logout_auto.php';
 
 
@@ -117,33 +119,27 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     
       
 <?php
-        function db(){ //handles database connection
-
-        //connect to the database server or die and spit out connection error
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
-        //select database table or die and spit out database selection error
-        mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
-          return $conn;  
-        }
         function simpan(){
-           // include "../koneksi.php";
-	    $conn = db();					
-            $a		    = $_POST['nip'];
-	    $b		    = $_POST['nama'];
-	    $c		    = $_POST['pangkat'];
-	    $d	    	    = $_POST['jabatan'];
-	    $e	            = $_POST['unit_kerja'];
-	    $f		    = $_POST['jekel'];
-	    $g		    = $_POST['tmt'];
-	    $h		    = $_POST['level'];
+
+			global $mysqli;
+
+           // include "../koneksi.php";				
+        	$a = $_POST['nip'];
+	    	$b = $_POST['nama'];
+	    	$c = $_POST['pangkat'];
+	    	$d = $_POST['jabatan'];
+	    	$e = $_POST['unit_kerja'];
+	    	$f = $_POST['jekel'];
+	    	$g = $_POST['tmt'];
+	    	$h = $_POST['level'];
 	    
             $sql="insert into tbl_pns (nip, nama_pns, id_palru, id_jabatan, unit_kerja, jekel, tmt, level, pwd) 
                                     values ('$a','$b','$c','$d','$e','$f','$g','$h',md5(md5('$h')))";
 	    
-            $hasil=mysql_query($sql);
+            $hasil=$mysqli->query($sql);
 	    
             if(!$hasil){
-            die("Gagal Simpan Data Pegawai karena :".mysql_error());
+            die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 	    }
 	    else 
 	       header('Location:admin_input_pegawai.php');
@@ -157,8 +153,8 @@ include "../koneksi.php";
     if($_GET['mode'] == 'delete') {
        //Check if there is something in $_GET['id'].
        if($_GET['nip']) {
-          $query = "DELETE FROM tbl_pns WHERE nip='" . mysql_real_escape_string($_GET['nip']) . "'";
-          mysql_query($query);
+          $query = "DELETE FROM tbl_pns WHERE nip='" . mysqli_real_escape_string($_GET['nip']) . "'";
+          $mysqli->query($query);
 	  
 	    if($query)
 		header("location:admin_input_pegawai.php");
@@ -258,18 +254,17 @@ include "../koneksi.php";
     <!-- ########################################################################################################################################## -->
 
 <?php
-	include "../koneksi.php";
         //$nip = $_GET['username'];
-	//$hasil = mysql_query("SELECT * FROM tbl_form WHERE penilai='".$nip."'");
+	//$hasil = mysqli_query("SELECT * FROM tbl_form WHERE penilai='".$nip."'");
 	
-        //$hasil  = mysql_query("SELECT * FROM tbl_form WHERE penilai=1057;");
-	$hasil  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+        //$hasil  = mysqli_query("SELECT * FROM tbl_form WHERE penilai=1057;");
+	$hasil  = $mysqli->query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan ORDER BY a.level");
 	if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ". $mysqli->error);
 
-        /*if ($row = mysql_fetch_array($hasil)){
+        /*if ($row = mysqli_fetch_array($hasil)){
 	echo "Nama : ".$row['penilai']."<br>";
 	echo "Dinilai : ".$row['dinilai']."<br>";
 	
@@ -290,9 +285,9 @@ include "../koneksi.php";
   </tr>";
 
 
-        //while(mysql_fetch_assoc($hasil))
-	//while(mysql_num_rows($hasil)==$hitung)
-	while($row = mysql_fetch_array($hasil))
+        //while(mysqli_fetch_assoc($hasil))
+	//while(mysqli_num_rows($hasil)==$hitung)
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -309,7 +304,7 @@ include "../koneksi.php";
 		echo "</tr>";
             
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
     <input type="submit" name="print" value="Print" onclick="printDiv()">

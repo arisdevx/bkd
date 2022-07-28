@@ -1,18 +1,11 @@
 <?php
 	$host = "localhost";
 	$user = "root";
-	$pass = "";
-	$dbname = "bkd_rev";
+	$pass = "admin";
+	$dbname = "bkd";
 	
-	$kon = mysql_connect($host, $user, $pass);
-
-        
-	if(!$kon)
-				die ("Gagal koneksi karena ".mysql_error());
-				
-	$dbKon = mysql_select_db($dbname, $kon);
+	$mysqli = new mysqli($host, $user, $pass, $dbname);
 	
-	if(!$dbKon) 
-				die ("Gagal membuka database $dbname karena".mysql_error());
-
-?>
+	if($mysql->connect_errno) {
+		die('Koneksi gagal karena ' . $mysqli->connect_error);
+	}

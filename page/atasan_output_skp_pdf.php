@@ -8,16 +8,16 @@ include ('../nigol.php');
         $nip = $_GET['dinilai'];
 	$year = $_GET['tahun_skp'];
 	$penilai = $_GET['penilai'];
-        /*$hasil2  = mysql_query("select * from tbl_form_skp where penilai='$penilai'");
+        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai='$penilai'");
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
 		
-	if($row = mysql_fetch_array($hasil2))*/
-	    $hasil  = mysql_query("select * from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."' ORDER BY tahun_skp");	
+	if($row = mysqli_fetch_array($hasil2))*/
+	    $hasil  = mysqli_query("select * from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."' ORDER BY tahun_skp");	
 	
-	$ambil = mysql_query("select nama_pns from tbl_pns where nip='".$nip."'");
-	    if ($buaris = mysql_fetch_array($ambil))
+	$ambil = mysqli_query("select nama_pns from tbl_pns where nip='".$nip."'");
+	    if ($buaris = mysqli_fetch_array($ambil))
 		$html .= "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b><br><br>";
 		$html .="<br><br>";
 		$html .= "<center><table id='rounded-corner' summary='2007 Major IT Companies Profit' border=1>
@@ -45,7 +45,7 @@ include ('../nigol.php');
     <th>Biaya</th>
    </tr>";
    
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		$html .= "<tr>";
@@ -76,21 +76,21 @@ include ('../nigol.php');
 	}
 	 $tahun = $_GET['tahun_skp'];
 	 $nip = $_GET['dinilai'];
-	 $q1  = mysql_query("select sum(nilai_capaian_skp)/count(tahun_skp) AS Nilai_SKP from tbl_form_skp
+	 $q1  = mysqli_query("select sum(nilai_capaian_skp)/count(tahun_skp) AS Nilai_SKP from tbl_form_skp
 			 where tahun_skp=$tahun AND dinilai='".$nip."'");
 	 if (!$q1)
-	    die("Gagal Query data karena : ".mysql_error());
+	    die("Gagal Query data karena : ".mysqli_error());
 	    
-	 if($rowz = mysql_fetch_array($q1))
+	 if($rowz = mysqli_fetch_array($q1))
 	 $html .= "<tr align='center'>
 	       <th rowspan='2' colspan='13' align='right'>NILAI CAPAIAN SKP (60%) </th>
 	       <th rowspan='2'>".$rowz['Nilai_SKP']." (".$rowz['Nilai_SKP']*0.6.")</th>
 	      </tr>";
 	      
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	$html .= "</table>";
-	$get_penilai = mysql_query("select nama_pns from tbl_pns where nip='".$penilai."'");
-	    if ($row_get_penilai = mysql_fetch_array($get_penilai))
+	$get_penilai = mysqli_query("select nama_pns from tbl_pns where nip='".$penilai."'");
+	    if ($row_get_penilai = mysqli_fetch_array($get_penilai))
 		$html .="<br><br><br><br><br><br>";
 		$html .="<b>Blora, 31 Desember</b> $tahun<br>";
 		$html .="Pejabat Penilai,<br><br><br>";

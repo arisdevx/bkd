@@ -32,12 +32,12 @@ include "../koneksi.php";
 $nip = $_GET['dinilai'];
 $time = $_GET['time'];
 $sqledit = "select * from tbl_form_skp where dinilai = '$nip' AND time='$time'";
-$hasil = mysql_query($sqledit);
+$hasil = mysqli_query($sqledit);
 
 if (!$hasil)
-	die ("Gagal query untuk edit data karena..".mysql_error());
+	die ("Gagal query untuk edit data karena..".mysqli_error());
 	
-	$data = mysql_fetch_array($hasil);
+	$data = mysqli_fetch_array($hasil);
 	$tahun_skp		=$data['tahun_skp'];
         $penilai		=$data['penilai'];
 	$dinilai		=$data['dinilai'];
@@ -68,8 +68,8 @@ if (!$hasil)
     <?php
 
 	    function db(){ 
-	    $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
-	    mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+	    $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
+	    mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
 	    return $conn;  
 	    }
                 function update(){
@@ -95,9 +95,9 @@ if (!$hasil)
 				     waktu          ='$j',
 				     biaya          ='$l'
 			      where dinilai='$b' AND time='$y'  ";             
-                        $hasil=mysql_query($sql);
+                        $hasil=mysqli_query($sql);
                         if(!$hasil)
-			      die("Gagal Simpan Hasil Edit SKP Karena :".mysql_error());
+			      die("Gagal Simpan Hasil Edit SKP Karena :".mysqli_error());
                         
 			header('Location: penilai_input_skp.php?nip='.$_GET['dinilai']);exit;
 	       }

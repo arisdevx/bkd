@@ -8,19 +8,19 @@ include ('../nigol.php');
 	include("../ext/mpdf/mpdf.php");
 	$html .= '<h2 align="center">FORMULIR SASARAN KERJA<br>PEGAWAI NEGERI SIPIL</h2><br>';
 	//======LEFT=====
-		$golru  = mysql_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+		$golru  = mysqli_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 					where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
-		if($roww = mysql_fetch_array($golru))
+		if($roww = mysqli_fetch_array($golru))
 		$html .="<div style='float: left; alignment-adjust: middle; width: 28%; margin-bottom: 0pt;'>
 				<b>I. PEJABAT PENILAI</b> <br>";
 		
-		$hasil  = mysql_query("select a.kode, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+		$hasil  = mysqli_query("select a.kode, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
-		if($row = mysql_fetch_array($hasil))
-		$hasil_lagi  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+		if($row = mysqli_fetch_array($hasil))
+		$hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='".$row['kode']."' AND a.level='penilai' ORDER BY a.level");
-		if($rowz = mysql_fetch_array($hasil_lagi))
+		if($rowz = mysqli_fetch_array($hasil_lagi))
 		$html .="	1. Nama		 : $rowz[nama_pns]<br>
 				2. NIP     	 : $rowz[nip]<br>
 				3. Pangkat/golru : $rowz[nama_palru]<br>
@@ -30,18 +30,18 @@ include ('../nigol.php');
 		
         $nip = $_GET['dinilai'];
 	$year = $_GET['tahun_skp'];
-        /*$hasil2  = mysql_query("select * from tbl_form_skp where penilai=".$_SESSION['userid']."");
+        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai=".$_SESSION['userid']."");
 	if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
-	if($row = mysql_fetch_array($hasil2))*/
-	    $hasil  = mysql_query("select * from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."' ORDER BY tahun_skp");	
+		die("Gagal Query data karena : ".mysqli_error());
+	if($row = mysqli_fetch_array($hasil2))*/
+	    $hasil  = mysqli_query("select * from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."' ORDER BY tahun_skp");	
 	
-	$ambil = mysql_query("select * from tbl_pns where nip='".$nip."'");
+	$ambil = mysqli_query("select * from tbl_pns where nip='".$nip."'");
 	
 	
-	    if ($buaris = mysql_fetch_array($ambil))
-		$ambil2 = mysql_query("select * from tbl_pangkat_golru where id_palru='".$buaris['id_palru']."'");
-		$ambil3 = mysql_query("select * from tbl_jabatan where id_jabatan='".$buaris['id_jabatan']."'");
+	    if ($buaris = mysqli_fetch_array($ambil))
+		$ambil2 = mysqli_query("select * from tbl_pangkat_golru where id_palru='".$buaris['id_palru']."'");
+		$ambil3 = mysqli_query("select * from tbl_jabatan where id_jabatan='".$buaris['id_jabatan']."'");
 		echo "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b><br><br>";
 	//======RIGHT=====
 			
@@ -49,9 +49,9 @@ include ('../nigol.php');
 				<b>II. PEGAWAI NEGERI SIPIL YANG DINILAI</b> <br>
 				1. Nama		 : $buaris[nama_pns]<br>
 				2. NIP     	 : $nip<br>";
-	    if ($buarisz = mysql_fetch_array($ambil2))
+	    if ($buarisz = mysqli_fetch_array($ambil2))
 		$html .="	3. Pangkat/golru : $buarisz[nama_palru]<br>";
-	    if ($buariszs = mysql_fetch_array($ambil3))
+	    if ($buariszs = mysqli_fetch_array($ambil3))
 		$html .="	4. Jabatan	 : $buariszs[nama_jabatan]<br>
 				</div>";
 	//===============END RIGHT
@@ -74,7 +74,7 @@ include ('../nigol.php');
     <th>Biaya</th>
    </tr>";
    
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		$html .= "<tr>";
@@ -91,7 +91,7 @@ include ('../nigol.php');
 	 $nip = $_GET['dinilai'];
 
 	      
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	$html .= "</table>";
 	$html .="<br><br><br><br>";
 	

@@ -105,9 +105,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         function db(){ //handles database connection
 
         //connect to the database server or die and spit out connection error
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
         //select database table or die and spit out database selection error
-        mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
           return $conn;  
         }
         function simpan(){
@@ -124,9 +124,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    
             $sql="insert into tbl_pns (nip, nama_pns, id_palru, id_jabatan, unit_kerja, jekel, tmt, level) 
                                     values ('$a','$b','$c','$d','$e','$f','$g','$h')";
-            $hasil=mysql_query($sql);
+            $hasil=mysqli_query($sql);
             if(!$hasil){
-            die("Gagal Simpan Data Pegawai karena :".mysql_error());
+            die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 	    }else {
             header('Location: admin_input_pegawai.php');
 	    exit;}
@@ -138,8 +138,8 @@ include "../koneksi.php";
     if($_GET['mode'] == 'delete') {
        //Check if there is something in $_GET['id'].
        if($_GET['nip']) {
-          $query = "DELETE FROM tbl_pns WHERE nip='" . mysql_real_escape_string($_GET['nip']) . "'";
-          mysql_query($query);
+          $query = "DELETE FROM tbl_pns WHERE nip='" . mysqli_real_escape_string($_GET['nip']) . "'";
+          mysqli_query($query);
        }
     }
 	if($query)
@@ -237,23 +237,23 @@ include "../koneksi.php";
 	include "../koneksi.php";
 	
 /*
-	$hasil2  = mysql_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
+	$hasil2  = mysqli_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
 	
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 		
-	  if($row = mysql_fetch_array($hasil2))
-	    $hasil  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	  if($row = mysqli_fetch_array($hasil2))
+	    $hasil  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode2='".$row[kode2]."' AND a.level='pegawai' ORDER BY a.level");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 */
-	$hasil  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	$hasil  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND a.level='pegawai' ORDER BY b.nama_jabatan");
 	if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
 
 	echo '<input type=button value="Refresh" onClick="window.location.reload()" />';
@@ -272,9 +272,9 @@ include "../koneksi.php";
   </tr>";
 
 
-        //while(mysql_fetch_assoc($hasil))
-	//while(mysql_num_rows($hasil)==$hitung)
-	while($row = mysql_fetch_array($hasil))
+        //while(mysqli_fetch_assoc($hasil))
+	//while(mysqli_num_rows($hasil)==$hitung)
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -291,7 +291,7 @@ include "../koneksi.php";
 		echo "</tr>";
             
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
   

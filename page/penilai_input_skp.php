@@ -110,9 +110,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         function db(){ //handles database connection
 
         //connect to the database server or die and spit out connection error
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
         //select database table or die and spit out database selection error
-        mysql_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysql_errno());
+        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
           return $conn;  
         }
         function simpan(){
@@ -130,9 +130,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    
             $sql="insert into tbl_form_skp (tahun_skp, dinilai, tugas, kredit, kuantitas, kualitas, waktu, biaya, penilai, time) 
                                     values ('$a','$b','$c','$y','$d','$e','$f','$g','$x',CURTIME())";
-            $hasil=mysql_query($sql);
+            $hasil=mysqli_query($sql);
             if(!$hasil){
-            die("Gagal Simpan Data Form SKP karena :".mysql_error());
+            die("Gagal Simpan Data Form SKP karena :".mysqli_error());
 	    }else {
 	       header('Location: penilai_input_skp.php?nip='.$_GET['nip']);  
 	    exit;}
@@ -144,11 +144,11 @@ include "../koneksi.php";
     if($_GET['mode'] == 'delete') {
        if($_GET['tahun_skp'] && $_GET['dinilai'] && $_GET['time']) {
           $query = "DELETE FROM tbl_form_skp
-		     WHERE tahun_skp=" . mysql_real_escape_string($_GET['tahun_skp']) . " AND
-			   dinilai='" . mysql_real_escape_string($_GET['dinilai']) . "' AND
-			   time='" . mysql_real_escape_string($_GET['time']) . "'
+		     WHERE tahun_skp=" . mysqli_real_escape_string($_GET['tahun_skp']) . " AND
+			   dinilai='" . mysqli_real_escape_string($_GET['dinilai']) . "' AND
+			   time='" . mysqli_real_escape_string($_GET['time']) . "'
 		     ";
-          mysql_query($query);
+          mysqli_query($query);
        }
     }
 	if($query)
@@ -221,15 +221,15 @@ include "../koneksi.php";
 <?php
 	include "../koneksi.php";
         $nip = $_GET['nip'];
-        /*$hasil2  = mysql_query("select * from tbl_form_skp where penilai=".$_SESSION['userid']."");
+        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai=".$_SESSION['userid']."");
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());*/
+		die("Gagal Query data karena : ".mysqli_error());*/
 	
 	//iki ngeprint laporan  
 	    //echo "<form method='get' action='penilai_output_skp-form_pdf.php?tahun_skp=$_POST[tahun_skp]&dinilai=$nip'>";
 	    echo "<select onchange='this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);' name='tahun_skp'><option>Cetak Formulir SKP</option>";
-		  $ngeprint = mysql_query("select distinct (tahun_skp) from tbl_form_skp where dinilai='$nip'");
-		  while ($ngeprint_row = mysql_fetch_array($ngeprint)){
+		  $ngeprint = mysqli_query("select distinct (tahun_skp) from tbl_form_skp where dinilai='$nip'");
+		  while ($ngeprint_row = mysqli_fetch_array($ngeprint)){
 		  echo "  <option value='penilai_output_skp-form_pdf.php?tahun_skp=$ngeprint_row[tahun_skp]&dinilai=$nip'>$ngeprint_row[tahun_skp]</option>";
 		  }
 	    echo "</select>&nbsp;";
@@ -240,17 +240,17 @@ include "../koneksi.php";
 	    //echo "</form>";
 	    
 	    echo "<select onchange='this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);' name='tahun_skp'><option>Cetak Penilaian SKP</option>";
-		  $ngeprint = mysql_query("select distinct (tahun_skp) from tbl_form_skp where dinilai='$nip'");
-		  while ($ngeprint_row = mysql_fetch_array($ngeprint)){
+		  $ngeprint = mysqli_query("select distinct (tahun_skp) from tbl_form_skp where dinilai='$nip'");
+		  while ($ngeprint_row = mysqli_fetch_array($ngeprint)){
 		  echo "  <option value='penilai_output_skp_pdf.php?tahun_skp=$ngeprint_row[tahun_skp]&dinilai=$nip'>$ngeprint_row[tahun_skp]</option>";
 		  }
 	    echo "</select><br>";
 	
-	//if($row = mysql_fetch_array($hasil2))
-	    $hasil  = mysql_query("select * from tbl_form_skp where dinilai='".$nip."' ORDER BY tahun_skp");	
+	//if($row = mysqli_fetch_array($hasil2))
+	    $hasil  = mysqli_query("select * from tbl_form_skp where dinilai='".$nip."' ORDER BY tahun_skp");	
 	
-	$ambil = mysql_query("select nama_pns from tbl_pns where nip='".$nip."'");
-	    if ($buaris = mysql_fetch_array($ambil))
+	$ambil = mysqli_query("select nama_pns from tbl_pns where nip='".$nip."'");
+	    if ($buaris = mysqli_fetch_array($ambil))
 	       echo "<br><b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b><br><br>";
 	echo '<input type=button value="Refresh" onClick="window.location.reload()" /><br><br>';
 	echo "<center><table id='rounded-corner' summary='2007 Major IT Companies Profit' border=1>
@@ -284,7 +284,7 @@ include "../koneksi.php";
 
 
 		
-	while($rowet = mysql_fetch_array($hasil))
+	while($rowet = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -320,7 +320,7 @@ include "../koneksi.php";
 		echo "</tr>";
             
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
         </div>

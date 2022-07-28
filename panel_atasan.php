@@ -49,12 +49,12 @@ if(($_SESSION['level']!="admin")
         Nama    : <?php echo $_SESSION['name']; ?><br>
 		<?php
 	  include "koneksi.php";
-	  $hasil  = mysql_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+	  $hasil  = mysqli_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 		
-	  if($row = mysql_fetch_array($hasil)){
+	  if($row = mysqli_fetch_array($hasil)){
 	    echo "Jabatan : ".$row['nama_jabatan'];
 	    echo "<br>";
 	    echo "Pangkat, golru : ".$row['nama_palru'];

@@ -62,9 +62,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         function db(){ //handles database connection
 
         //connect to the database server or die and spit out connection error
-        $conn = mysql_connect('localhost','root', '') or die("Cannot connect to the database server now". mysql_error());
+        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
         //select database table or die and spit out database selection error
-        mysql_select_db('bkd',$conn) or die("Error in selecting database now ".mysql_errno());
+        mysqli_select_db('bkd',$conn) or die("Error in selecting database now ".mysqli_errno());
           return $conn;  
         }
         function simpan(){
@@ -86,9 +86,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 
             $sql="insert into tbl_form (id_form, tugas, kredit, kuantitas, kualitas, waktu, biaya, tgl_form, penilai, dinilai) 
                                     values ('$nip_penilai','$tg','$kr','$kn','$kl','$wt','$by','$dt','$penilai','$dinilai')";
-            $hasil=mysql_query($sql);
+            $hasil=mysqli_query($sql);
             if(!$hasil)
-            die("Gagal Simpan Data Siswa karena :".mysql_error());
+            die("Gagal Simpan Data Siswa karena :".mysqli_error());
             
             echo "Penyimpanan data siswa berhasil";
     }
@@ -99,14 +99,14 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
                     <tr><td>Nama </td> <td> 
                                 <?
                                     // Load field datas into List box
-                                    $cn=mysql_connect("localhost","root") or die("Note: " . mysql_error());
-                                    $res=mysql_select_db("bkd",$cn) or die("Note: " . mysql_error());
+                                    $cn=mysqli_connect("localhost","root") or die("Note: " . mysqli_error());
+                                    $res=mysqli_select_db("bkd",$cn) or die("Note: " . mysqli_error());
                                     $sql = "select nip, nama_pns from tbl_pns where level='penilai';";
-                                    $res=mysql_query($sql) or die("Note: " . mysql_error());
+                                    $res=mysqli_query($sql) or die("Note: " . mysqli_error());
                                 ?>
                                     <select onChange="document.getElementById('combo').value=this.value" name="nama_pns_penilai">
                                 <?
-                                        while($ri = mysql_fetch_array($res))
+                                        while($ri = mysqli_fetch_array($res))
                                         {
                                             echo "<option value=" .$ri['nip']. ">" . $ri['nama_pns']. "</option>";
                                         }
@@ -123,14 +123,14 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
                                 <tr><td>Pegawai Dinilai </td> <td> 
                                 <?
                                         // Load field datas into List box
-                                        $cn=mysql_connect("localhost","root") or die("Note: " . mysql_error());
-                                        $res=mysql_select_db("bkd",$cn) or die("Note: " . mysql_error());
+                                        $cn=mysqli_connect("localhost","root") or die("Note: " . mysqli_error());
+                                        $res=mysqli_select_db("bkd",$cn) or die("Note: " . mysqli_error());
                                         $sql = "select nip, nama_pns from tbl_pns where level='pegawai';";
-                                        $res=mysql_query($sql) or die("Note: " . mysql_error());
+                                        $res=mysqli_query($sql) or die("Note: " . mysqli_error());
                                 ?>
                                         <select class="reqname" name="nama_pns_dinilai">
                                 <?
-                                        while($ri = mysql_fetch_array($res))
+                                        while($ri = mysqli_fetch_array($res))
                                         {
                                         echo "<option value=" .$ri['nama_pns'] . ">" . $ri['nama_pns'] . "</option>";
                                         }
@@ -153,14 +153,14 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 <?php
 	include "../koneksi.php";
         //$nip = $_GET['username'];
-	//$hasil = mysql_query("SELECT * FROM tbl_form WHERE penilai='".$nip."'");
+	//$hasil = mysqli_query("SELECT * FROM tbl_form WHERE penilai='".$nip."'");
 	
-        //$hasil  = mysql_query("SELECT * FROM tbl_form WHERE penilai=1057;");
-	$hasil  = mysql_query("SELECT * FROM tbl_form ");
+        //$hasil  = mysqli_query("SELECT * FROM tbl_form WHERE penilai=1057;");
+	$hasil  = mysqli_query("SELECT * FROM tbl_form ");
 	if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
-        /*if ($row = mysql_fetch_array($hasil)){
+        /*if ($row = mysqli_fetch_array($hasil)){
 	echo "Nama : ".$row['penilai']."<br>";
 	echo "Dinilai : ".$row['dinilai']."<br>";
 	
@@ -182,9 +182,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
   </tr>';
 
 
-        //while(mysql_fetch_assoc($hasil))
-	//while(mysql_num_rows($hasil)==$hitung)
-	while($row = mysql_fetch_array($hasil))
+        //while(mysqli_fetch_assoc($hasil))
+	//while(mysqli_num_rows($hasil)==$hitung)
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -203,7 +203,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 		echo "</tr>";
             
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
     

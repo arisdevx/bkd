@@ -93,13 +93,13 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         Nama    : <?php echo $_SESSION['name']; ?><br/>
 	<?php
 	  include "koneksi.php";
-	  //$hasil  = mysql_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
-	  $hasil  = mysql_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+	  //$hasil  = mysqli_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
+	  $hasil  = mysqli_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 		
-	  if($row = mysql_fetch_array($hasil)){
+	  if($row = mysqli_fetch_array($hasil)){
 	    echo "Jabatan : ".$row['nama_jabatan'];
 	    echo "<br>";
 	    echo "Pangkat, golru : ".$row['nama_palru'];
@@ -107,10 +107,10 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    //echo "Kode Atasan : ".$row['kode2'];
 	    
 	  }
-	  $hasil_lagi  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	  $hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='".$row['kode2']."' AND a.level='atasan' ORDER BY a.level");
-	  if($rowz = mysql_fetch_array($hasil_lagi)){
+	  if($rowz = mysqli_fetch_array($hasil_lagi)){
 	    echo "<b>Atasan Penilai :</b><br>";
 	    echo "NIP : ".$rowz['nip'];
 	    echo "<br>";
@@ -143,17 +143,17 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	include "../koneksi.php";
 	
 
-	  $hasil2  = mysql_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
-	  //$hasil  = mysql_query("select nama_jabatan from tbl_jabatan where id_jabatan=13");
+	  $hasil2  = mysqli_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
+	  //$hasil  = mysqli_query("select nama_jabatan from tbl_jabatan where id_jabatan=13");
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 		
-	  if($row = mysql_fetch_array($hasil2))
-	    $hasil  = mysql_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	  if($row = mysqli_fetch_array($hasil2))
+	    $hasil  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='".$row[kode]."' AND a.level='pegawai' ORDER BY a.level");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysql_error());
+		die("Gagal Query data karena : ".mysqli_error());
 
 	echo '<input type=button value="Refresh" onClick="window.location.reload()" />';
 	
@@ -171,7 +171,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     <!--<th colspan='2'>PRINT</th>-->
   </tr>";
 
-	while($row = mysql_fetch_array($hasil))
+	while($row = mysqli_fetch_array($hasil))
 	{
            
 		echo "<tr>";
@@ -190,7 +190,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 		echo "</tr>";
             
 	}
-	mysql_free_result($result);
+	mysqli_free_result($result);
 	echo "</table>";
 ?>
     <!--<input type="submit" name="print" value="Print" onclick="printDiv()">-->
