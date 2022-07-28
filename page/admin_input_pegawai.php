@@ -153,7 +153,7 @@ include "../koneksi.php";
     if($_GET['mode'] == 'delete') {
        //Check if there is something in $_GET['id'].
        if($_GET['nip']) {
-          $query = "DELETE FROM tbl_pns WHERE nip='" . mysqli_real_escape_string($_GET['nip']) . "'";
+          $query = "DELETE FROM tbl_pns WHERE nip='" . $mysqli->real_escape_string($_GET['nip']) . "'";
           $mysqli->query($query);
 	  
 	    if($query)
