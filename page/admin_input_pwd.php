@@ -66,25 +66,17 @@ Silahkan pilih tombol "Set Password" untuk mengganti Password sesuai hak akses y
     <table border="1" >
     
 	  <?php
-		  function db(){ //handles database connection
-	  
-		  //connect to the database server or die and spit out connection error
-		  $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
-		  //select database table or die and spit out database selection error
-		  mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
-		    return $conn;  
-		  }
 		  //===========================
 		  function simpanAtasan(){
 		     // include "../koneksi.php";
-		      $conn = db();					
+		      global $mysqli;			
 		      $a    = $_POST['atasan_'];
 	  
 		      
 		      $sql="update tbl_pns set pwd=md5(md5('$a')) where level='atasan'";
-		      $hasil=mysqli_query($sql);
+		      $hasil=$mysqli->query($sql);
 		      if(!$hasil){
-		      die("Gagal Simpan Data Pegawai karena :".mysqli_error());
+		      die("Gagal Simpan Data Pegawai karena :".$mysqli->error);
 		      }else {
 		      header('Location: admin_input_pwd.php');
 		      exit;}
@@ -92,28 +84,28 @@ Silahkan pilih tombol "Set Password" untuk mengganti Password sesuai hak akses y
 		  //===========================
 		  function simpanPenilai(){
 		     // include "../koneksi.php";
-		      $conn = db();					
+		      global $mysqli;			
 		      $b    = $_POST['penilai_'];
 	  
 		      
 		      $sql="update tbl_pns set pwd=md5(md5('$b')) where level='penilai'";
-		      $hasil=mysqli_query($sql);
+		      $hasil=$mysqli->query($sql);
 		      if(!$hasil){
-		      die("Gagal Simpan Data Pegawai karena :".mysqli_error());
+		      die("Gagal Simpan Data Pegawai karena :".$mysqli->error);
 		      }else {
 		      header('Location: admin_input_pwd.php');
 		      exit;}
 	         }
 		  function simpanPegawaiDinilai(){
 		     // include "../koneksi.php";
-		      $conn = db();					
+		      global $mysqli;			
 		      $c    = $_POST['dinilai_'];
 	  
 		      
 		      $sql="update tbl_pns set pwd=md5(md5('$c')) where level='pegawai'";
-		      $hasil=mysqli_query($sql);
+		      $hasil=$mysqli->query($sql);
 		      if(!$hasil){
-		      die("Gagal Simpan Data Pegawai karena :".mysqli_error());
+		      die("Gagal Simpan Data Pegawai karena :".$mysqli->error);
 		      }else {
 		      header('Location: admin_input_pwd.php');
 		      exit;}

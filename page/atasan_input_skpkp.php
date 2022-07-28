@@ -102,17 +102,9 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     <table border="1" >
     
 <?php
-        function db(){ //handles database connection
-
-        //connect to the database server or die and spit out connection error
-        $conn = mysqli_connect('localhost','root', '') or die("Cannot connect to the database server now". mysqli_error());
-        //select database table or die and spit out database selection error
-        mysqli_select_db('bkd_rev',$conn) or die("Error in selecting database now ".mysqli_errno());
-          return $conn;  
-        }
         function simpan(){
            // include "../koneksi.php";
-	    $conn = db();					
+	    global $mysqli;				
             $a		    = $_POST['nip'];
 	    $b		    = $_POST['nama'];
 	    $c		    = $_POST['pangkat'];
@@ -124,7 +116,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    
             $sql="insert into tbl_pns (nip, nama_pns, id_palru, id_jabatan, unit_kerja, jekel, tmt, level) 
                                     values ('$a','$b','$c','$d','$e','$f','$g','$h')";
-            $hasil=mysqli_query($sql);
+            $hasil=$mysqli->query($sql);
             if(!$hasil){
             die("Gagal Simpan Data Pegawai karena :".mysqli_error());
 	    }else {
@@ -138,8 +130,8 @@ include "../koneksi.php";
     if($_GET['mode'] == 'delete') {
        //Check if there is something in $_GET['id'].
        if($_GET['nip']) {
-          $query = "DELETE FROM tbl_pns WHERE nip='" . mysqli_real_escape_string($_GET['nip']) . "'";
-          mysqli_query($query);
+          $query = "DELETE FROM tbl_pns WHERE nip='" . $mysqli->real_escape_string($_GET['nip']) . "'";
+          $mysqli->query($query);
        }
     }
 	if($query)
@@ -237,19 +229,19 @@ include "../koneksi.php";
 	include "../koneksi.php";
 	
 /*
-	$hasil2  = mysqli_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
+	$hasil2  = $mysqli->query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
 	
 	  if (!$hasil2)
 		die("Gagal Query data karena : ".mysqli_error());
 		
 	  if($row = mysqli_fetch_array($hasil2))
-	    $hasil  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	    $hasil  = $mysqli->query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode2='".$row[kode2]."' AND a.level='pegawai' ORDER BY a.level");
 	  if (!$hasil)
 		die("Gagal Query data karena : ".mysqli_error());
 */
-	$hasil  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	$hasil  = $mysqli->query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND a.level='pegawai' ORDER BY b.nama_jabatan");
 	if (!$hasil)

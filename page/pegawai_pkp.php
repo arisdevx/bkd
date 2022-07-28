@@ -65,10 +65,10 @@ if(($_SESSION['level']!="admin")
         Nama    : <?php echo $_SESSION['name']; ?><br/>
 	<?php
 	  include "../koneksi.php";
-	  $hasil  = mysqli_query("select a.kode, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+	  $hasil  = $mysqli->query("select a.kode, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysqli_error());
+		die("Gagal Query data karena : ".$mysqli->error);
 		
 	  if($row = mysqli_fetch_array($hasil)){
 	    echo "Jabatan : ".$row['nama_jabatan'];
@@ -77,7 +77,7 @@ if(($_SESSION['level']!="admin")
 	    echo "<br>";echo "<br>";
 	  }
 	  
-	  $hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	  $hasil_lagi  = $mysqli->query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='".$row['kode']."' AND a.level='penilai' ORDER BY a.level");
 	  if($rowz = mysqli_fetch_array($hasil_lagi)){
@@ -100,23 +100,23 @@ if(($_SESSION['level']!="admin")
         <?php
 	include "../koneksi.php";
         $nip = $_SESSION['userid'];
-        /*$hasil2  = mysqli_query("select * from tbl_pkp where penilai=".$_SESSION['userid']."");
+        /*$hasil2  = $mysqli->query("select * from tbl_pkp where penilai=".$_SESSION['userid']."");
 	  if (!$hasil2)
 		die("Gagal Query data karena : ".mysqli_error());
 	
 	if($row = mysqli_fetch_array($hasil2))*/
-	    $hasil  = mysqli_query("select * from tbl_pkp where dinilai='".$nip."' ORDER BY tahun_pkp");	
+	    $hasil  = $mysqli->query("select * from tbl_pkp where dinilai='".$nip."' ORDER BY tahun_pkp");	
 	 if (!$hasil)
 		die("Gagal Query data karena : ".mysqli_error());
 
 	echo '<input type=button value="Refresh" onClick="window.location.reload()" /><br><br>';
 	
-	$ambil = mysqli_query("select nama_pns from tbl_pns where nip='".$nip."'");
+	$ambil = $mysqli->query("select nama_pns from tbl_pns where nip='".$nip."'");
 	    if ($buaris = mysqli_fetch_array($ambil))
 	       echo "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b><br><br>";
                
         	    echo "<select onchange='this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);' name='tahun_skp'><option>Cetak PKP</option>";
-		  $ngeprint = mysqli_query("select distinct (tahun_pkp) from tbl_pkp where dinilai='$nip'");
+		  $ngeprint = $mysqli->query("select distinct (tahun_pkp) from tbl_pkp where dinilai='$nip'");
 		  while ($ngeprint_row = mysqli_fetch_array($ngeprint)){
 		  echo "  <option value='pegawai_output_pkp_pdf.php?tahun_pkp=$ngeprint_row[tahun_pkp]&dinilai=$nip'>$ngeprint_row[tahun_pkp]</option>";
 		  }
