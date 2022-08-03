@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include ('../nigol.php');
 
 	include "../koneksi.php";
@@ -10,11 +10,11 @@ include ('../nigol.php');
         $nip = $_GET['dinilai'];
 	$year = $_GET['tahun_pkp'];
         $penilai = $_GET['penilai'];
-        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai=".$penilai."");
+        /*$hasil2  = $mysqli->query("select * from tbl_form_skp where penilai=".$penilai."");
 	if (!$hasil2)
 		die("Gagal Query data karena : ".mysqli_error());
 	if($row = mysqli_fetch_array($hasil2))*/
-	    $hasil  = mysqli_query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");
+	    $hasil  = $mysqli->query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");
 		$html .="<div style='float: left; alignment-adjust: middle; width: 50%; margin-bottom: 0pt;'>
 		BADAN KEPEGAWAIAN DAERAH  <br><br><br><br>
 				<b>I. PEJABAT PENILAI </b> <br>
@@ -57,7 +57,7 @@ include ('../nigol.php');
 					<b>REKOMENDASI </b><br>";
 			$html .="	$rowt[rekomendasi]<br>";}
 			$html .="		<br><br><br><br><br>";
-                        $get_penilai  = mysqli_query("select * from tbl_pns where nip='$penilai'");	
+                        $get_penilai  = $mysqli->query("select * from tbl_pns where nip='$penilai'");	
                         if($row_get_penilai = mysqli_fetch_array($get_penilai))
 			$html .="Dibuat Tanggal, 31 Desember $year<br>
 					Pejabat Penilai,<br><br><br><br>
@@ -67,27 +67,27 @@ include ('../nigol.php');
 	
         $nip = $_GET['dinilai'];
 	$year = $_GET['tahun_pkp'];
-        /*$hasil2  = mysqli_query("select * from tbl_form_skp where penilai=".$penilai."");
+        /*$hasil2  = $mysqli->query("select * from tbl_form_skp where penilai=".$penilai."");
 	if (!$hasil2)
 		die("Gagal Query data karena : ".mysqli_error());
 	if($row = mysqli_fetch_array($hasil2))*/
-	    $hasil  = mysqli_query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");	
+	    $hasil  = $mysqli->query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");	
 	
-	$ambil = mysqli_query("select * from tbl_pns where nip='".$nip."'");
+	$ambil = $mysqli->query("select * from tbl_pns where nip='".$nip."'");
 	    if ($buaris = mysqli_fetch_array($ambil))
-	    	$ambil2 = mysqli_query("select * from tbl_pangkat_golru where id_palru='".$buaris['id_palru']."'");
-		$ambil3 = mysqli_query("select * from tbl_jabatan where id_jabatan='".$buaris['id_jabatan']."'");
+	    	$ambil2 = $mysqli->query("select * from tbl_pangkat_golru where id_palru='".$buaris['id_palru']."'");
+		$ambil3 = $mysqli->query("select * from tbl_jabatan where id_jabatan='".$buaris['id_jabatan']."'");
 		
 	//======RIGHT=====
 		$html .="<div style='float: right; alignment-adjust: middle; width: 40%; margin-bottom: 0pt;'>
 		JANGKA WAKTU PENILAIAN<br>1 JANUARI $year s.d. 31 DESEMBER $year  <br><br>";
-		$get_penilai  = mysqli_query("select * from tbl_pns where nip='$penilai'");	
+		$get_penilai  = $mysqli->query("select * from tbl_pns where nip='$penilai'");	
 		if($row_get_penilai = mysqli_fetch_array($get_penilai))
 		//PENILAI
 		$html .="	 	<br>
 					$row_get_penilai[nama_pns]<br>
 					$penilai  	<br>";
-                $get_golrujab = mysqli_query("select * from tbl_jabatan, tbl_pangkat_golru
+                $get_golrujab = $mysqli->query("select * from tbl_jabatan, tbl_pangkat_golru
 						where tbl_jabatan.id_jabatan=$row_get_penilai[id_jabatan]
 						AND tbl_pangkat_golru.id_palru=$row_get_penilai[id_palru]");
 		if($row_get_golrujab = mysqli_fetch_array($get_golrujab))
@@ -104,7 +104,7 @@ include ('../nigol.php');
 		$html .="		$buariszs[nama_jabatan]	  	<br>";
 		$html .="			<br><br>";
 		//ATASAN PENILAI
-		$hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+		$hasil_lagi  = $mysqli->query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode2='".$row_get_golrujab['kode2']."' AND a.level='atasan' ORDER BY a.level");
 		if($rowz = mysqli_fetch_array($hasil_lagi))
@@ -204,14 +204,14 @@ include ('../nigol.php');
     <th  colspan='2' align='center'>UNSUR PENILAIAN</th>
     <th  colspan='2' align='center'>NILAI CAPAIAN</th>
   </tr>";
-  $pk_skp  = mysqli_query("select sum(nilai_capaian_skp)/count(tahun_skp)*0.6 AS NilaiSKP from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."'");
+  $pk_skp  = $mysqli->query("select sum(nilai_capaian_skp)/count(tahun_skp)*0.6 AS NilaiSKP from tbl_form_skp where tahun_skp=$year AND dinilai='".$nip."'");
   if($row_pk_skp = mysqli_fetch_array($pk_skp))
   $html .="<tr>
     <td align='center'>1</td>
     <td  colspan='2'>Penilaian Sasaran Kerja (60%)</td>
     <td  colspan='2'>$row_pk_skp[NilaiSKP]</td>
   </tr>";
-  $pk_pkp  = mysqli_query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");
+  $pk_pkp  = $mysqli->query("select * from tbl_pkp where tahun_pkp=$year AND dinilai='".$nip."' ORDER BY tahun_pkp");
   if($row_pk_pkp = mysqli_fetch_array($pk_pkp))
   $html .="<tr>
     <td align='center'>2</td>

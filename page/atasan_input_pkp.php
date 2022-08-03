@@ -68,6 +68,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
      header("location:../index.php?error=6");
 
 }
+$nip = $_GET['nip'];
 ?>
 <?php
     //echo "iki halaman panel penilai Aldy";
@@ -91,12 +92,11 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         NIP     : <?php echo $_SESSION['userid']; ?><br>
         Nama    : <?php echo $_SESSION['name']; ?><br/>
 	<?php
-	  include "koneksi.php";
-	  //$hasil  = mysqli_query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
-	  $hasil  = mysqli_query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
+	  //$hasil  = $mysqli->query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
+	  $hasil  = $mysqli->query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
 				where a.id_jabatan=".$_SESSION['jab']." AND b.id_palru=".$_SESSION['pal']."");
 	  if (!$hasil)
-		die("Gagal Query data karena : ".mysqli_error());
+		die("Gagal Query data karena : ".$mysqli->error);
 		
 	  if($row = mysqli_fetch_array($hasil)){
 	    echo "Jabatan : ".$row['nama_jabatan'];
@@ -105,18 +105,18 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    echo "<br>";echo "<br>";
 	    //echo "Kode Atasan : ".$row['kode2'];
 	  }
-	  $get_kasum = mysqli_query("select * from tbl_pns, tbl_jabatan, tbl_pangkat_golru
+	  $get_kasum = $mysqli->query("select * from tbl_pns, tbl_jabatan, tbl_pangkat_golru
 				   where tbl_pns.id_jabatan = tbl_jabatan.id_jabatan AND
 					  tbl_pns.id_palru = tbl_pangkat_golru.id_palru AND
 					  tbl_pns.nip ='$nip'");
 	       if (!$get_kasum)
-		die("Gagal Query get kasum  karena : ".mysqli_error());
+		die("Gagal Query get kasum  karena : ".$mysqli->error);
 		
 	  /*if ($row_getkasum = mysqli_fetch_array($get_kasum)){
 	       echo "kasumnya : ".$row_getkasum['kode'];
 	       }*/
 	  if ($row_getkasum = mysqli_fetch_array($get_kasum))
-	  $hasil_lagi  = mysqli_query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
+	  $hasil_lagi  = $mysqli->query("select a.nip, a.nama_pns, c.nama_palru, b.nama_jabatan, a.unit_kerja, a.jekel, a.tmt, a.level
 			       from tbl_pns a, tbl_jabatan b, tbl_pangkat_golru c
 			       where a.id_palru=c.id_palru AND a.id_jabatan=b.id_jabatan AND b.kode='$row_getkasum[kode]' AND a.level='penilai' ORDER BY a.level");
 	  if($rowz = mysqli_fetch_array($hasil_lagi)){
@@ -147,20 +147,19 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     <!-- ########################################################################################################################################## -->
 
 <?php
-	include "../koneksi.php";
-        $nip = $_GET['nip'];
-        /*$hasil2  = mysqli_query("select * from tbl_pkp where penilai=".$rowz['nip']."");
+        
+        /*$hasil2  = $mysqli->query("select * from tbl_pkp where penilai=".$rowz['nip']."");
 	  if (!$hasil2)
-		die("Gagal Query data karena : ".mysqli_error());
+		die("Gagal Query data karena : ".$mysqli->error);
 	
 	if($row = mysqli_fetch_array($hasil2))*/
-	    $hasil  = mysqli_query("select * from tbl_pkp where dinilai='".$nip."' ORDER BY tahun_pkp");	
+	    $hasil  = $mysqli->query("select * from tbl_pkp where dinilai='".$nip."' ORDER BY tahun_pkp");	
 	 if (!$hasil)
-		die("Gagal Query data karena : ".mysqli_error());
+		die("Gagal Query data karena : ".$mysqli->error);
 
 	echo '<input type=button value="Refresh" onClick="window.location.reload()" /><br><br>';
 	
-	$ambil = mysqli_query("select nama_pns from tbl_pns where nip='".$nip."'");
+	$ambil = $mysqli->query("select nama_pns from tbl_pns where nip='".$nip."'");
 	    if ($buaris = mysqli_fetch_array($ambil))
 	       echo "<b>Nama Pegawai Dinilai : ".$buaris['nama_pns']."<br> NIP : ".$nip."</b>";
 	
