@@ -91,7 +91,7 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
         NIP     : <?php echo $_SESSION['userid']; ?><br>
         Nama    : <?php echo $_SESSION['name']; ?><br/>          
 	<?php
-	  include "koneksi.php";
+	  include "../koneksi.php";
 	  $nip = $_GET['nip'];
 	  //$hasil  = $mysqli->query("select * from tbl_jabatan where id_jabatan=".$_SESSION['jab']."");
 	  $hasil  = $mysqli->query("select a.kode2, a.nama_jabatan, b.nama_palru from tbl_jabatan a, tbl_pangkat_golru b
@@ -140,7 +140,6 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
     <!-- ISI SPOILER -->
 <?php
         function simpan(){
-           
 	    global $mysqli;				
 	    $a	= $_POST['tahun_skp'];//datepicker
 	    $b	= $_POST['dinilai'];//textfield get
@@ -152,20 +151,21 @@ if(($_SESSION['level']!="admin") && ($_SESSION['level']!="atasan") && ($_SESSION
 	    $g	= $_POST['biaya'];//textfield
 	    $x	= $_POST['penilai'];//textfield get
 	    
-            $sql="insert into tbl_form_skp (tahun_skp, dinilai, tugas, kredit, kuantitas, kualitas, waktu, biaya, penilai, time) 
-                                    values ('$a','$b','$c','$y','$d','$e','$f','$g','$x',CURTIME())";
+            $sql="insert into tbl_form_skp (tahun_skp, dinilai, tugas, kredit, kuantitas, kualitas, waktu, biaya, penilai, time, kredit_real, kuantitas_real, kualitas_real, waktu_real, biaya_real, penghitungan, nilai_capaian_skp, nilai_skp, tgl_form, tgl_penilaian_skp) 
+                                    values ('$a','$b','$c','$y','$d','$e','$f','$g','$x',CURTIME(), 0, 0, 0, 0, 0, 0, 0, 0, NOW(), NOW())";
             $hasil=$mysqli->query($sql);
             if(!$hasil){
             die("Gagal Simpan Data Form SKP karena :".$mysqli->error);
 	    }else {
 	       header('Location: atasan_input_skp.php?nip='.$_GET['nip']);  
-	    exit;}
+	    	exit;
+		}
 	  }
 ?>
 <?php
 include "../koneksi.php";
-	
-    if($_GET['mode'] == 'delete') {
+	$query = null;
+    if(isset($_GET['mode']) && $_GET['mode'] == 'delete') {
        if($_GET['tahun_skp'] && $_GET['dinilai'] && $_GET['time']) {
           $query = "DELETE FROM tbl_form_skp
 		     WHERE tahun_skp=" . $mysqli->real_escape_string($_GET['tahun_skp']) . " AND
@@ -179,7 +179,7 @@ include "../koneksi.php";
             header('Location: atasan_input_skp.php?nip='.$_GET['dinilai']);
 ?>
          <fieldset>  
-	    <form id="formulir" action="<?php if (isset($_REQUEST['simpan'])) {simpan();} ?>" method="post" name="form_input" onsubmit="return simpan()">
+	    <form id="formulir" action="<?php isset($_REQUEST['simpan']) ? simpan() : ''; ?>" method="post" name="form_input" onsubmit="return simpan()">
                   <table border="1" >
 		    <pre>
 		     <tr><td>Tahun*</td>	        <td><select class="validate[required]" name="tahun_skp" >
